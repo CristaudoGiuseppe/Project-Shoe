@@ -138,7 +138,7 @@
             <hr size=”5″ color="e09336">
             <table>
                 <tr>
-                    <td><center><img src="img/interazioni_2.png" alt="interazioni_lower_panel" style="height: 90%; width: 90%"></center></td>
+                    <td><center><img src="img/Interazioni_2.png" alt="interazioni_lower_panel" style="height: 90%; width: 90%"></center></td>
                 </tr>
                 <tr>
                     <td>
