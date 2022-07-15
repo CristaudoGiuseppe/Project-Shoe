@@ -1,0 +1,25 @@
+body {
+    margin: 10;
+    font-family: "Poppins";
+    background: bisque;
+}
+
+h1 {
+    text-align: center;
+    color: #e09336;
+}
+
+h2 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.description {
+    font-size: 1.3em;
+}
+

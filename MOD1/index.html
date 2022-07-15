@@ -1,0 +1,266 @@
+<!doctype html>
+
+<html lang="en">
+	<head>
+        <meta HTTP-EQUIV=”Pragma” CONTENT=”no-cache”>
+        <meta HTTP-EQUIV=”Cache-Control” CONTENT=”no-cache”>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <title>WebGL - Project Shoe</title>
+        <meta charset="UTF-8">
+        <meta name="description" content="Project Shoe allows you to look at your favorite shoe!">
+        <meta name="author" content="Cristaudo Giuseppe">
+
+        <link rel="stylesheet" href="index.css">
+        <script src="const.js"></script> <!--used to define all CONST used in the application e.g texture PATH-->
+        <script type="text/javascript" src="resources/webgl-utils.js"></script> <!--used to render on canvas-->
+        <script type="text/javascript" src="resources/m4.js"></script> <!--used for matrix calculation-->
+        <script type="text/javascript" src="resources/dat.gui.js"></script> <!--easy API to create a control panel for the application-->
+        <script src="utils.js"></script>
+    </head>
+    <body onload = "project_shoe_demo()">
+        <div id = "fps_counter">
+        </div>
+        <center><h1>Project Shoe</h1></center>
+        <div class="container" id="canvas-container">
+            <table style="width:  100%;" cellpadding="5%">
+                <tr>
+                    <td><canvas id="shoes-canvas">Your browser does not support HTML 5!</canvas></td>
+                    <td>
+                    <div id="button_div">
+                        <table id="button_table" cellpadding="5%">
+                            <tr><td>
+                                <center>
+                                    <p>Change Body Color</p>
+                                    <button class="btn_black" id="body_black"></button>
+                                    <button class="btn_red" id="body_red"></button>
+                                    <button class="btn_orange" id="body_orange"></button>
+                                    <button class="btn_blue" id="body_blue"></button>
+                                    <div>
+                                        <input type="file"  accept="image/jpeg, image/png" name="image" id="file_body"  onchange="loadBody(event)" style="display: none;">
+                                        <h3><label for="file_body" style="cursor: pointer;">Upload Image</label></h3>
+                                        <img id="output_body" width="30%" height="30%" />	<br>
+                                        <script>
+                                            var image_body; // used to change the textures in the index when APPLY IMAGE is clicked
+                                            // get the img uploaded in the img field 
+                                            var loadBody = function(event) {
+                                                document.getElementById('output_body').style.display = 'block';
+                                                image_body = document.getElementById('output_body');
+                                                image_body.src = URL.createObjectURL(event.target.files[0]);
+                                            };
+                                        </script>
+                                        <button class="btn_2" id="change_body"  type="button">APPLY IMAGE</button>
+                                    </div>
+                                </center>
+                            </td></tr>
+                            <tr><td>
+                                <center>
+                                    <p>Change Logo Color</p>
+                                    <button class="btn_black" id="logo_black"></button>
+                                    <button class="btn_red" id="logo_red"></button>
+                                    <button class="btn_orange" id="logo_orange"></button>
+                                    <button class="btn_blue" id="logo_blue"></button>
+                                    <div>
+                                        <input type="file"  accept="image/jpeg, image/png" name="image" id="file_logo"  onchange="loadLogo(event)" style="display: none;">
+                                        <h3><label for="file_logo" style="cursor: pointer;">Upload Image</label></h3>
+                                        <img id="output_logo" width="30%" height="30%" />	<br>
+                                        <script>
+                                            var image_logo;
+                                            var loadLogo = function(event) {
+                                                document.getElementById('output_logo').style.display= 'block';
+                                                image_logo = document.getElementById('output_logo');
+                                                image_logo.src = URL.createObjectURL(event.target.files[0]);
+                                            };
+                                        </script>
+                                        <button class="btn_2" id="change_logo"  type="button">APPLY IMAGE</button>
+                                    </div>
+                                </center>
+                            </td></tr>
+                            <tr><td>
+                                <center>
+                                    <p>Change Back Color</p>
+                                    <button class="btn_black" id="back_black"></button>
+                                    <button class="btn_red" id="back_red"></button>
+                                    <button class="btn_orange" id="back_orange"></button>
+                                    <button class="btn_blue" id="back_blue"></button>
+                                    <div>
+                                        <input type="file"  accept="image/jpeg, image/png" name="image" id="file_back"  onchange="loadBack(event)" style="display: none;">
+                                        <h3><label for="file_back" style="cursor: pointer;">Upload Image</label></h3>
+                                        <img id="output_back" width="30%" height="30%" />	<br>
+                                        <script>
+                                            var image_back;
+                                            var loadBack = function(event) {
+                                                document.getElementById('output_back').style.display= 'block';
+                                                image_back = document.getElementById('output_back');
+                                                image_back.src = URL.createObjectURL(event.target.files[0]);
+                                            };
+                                        </script>
+                                        <button class="btn_2" id="change_back"  type="button">APPLY IMAGE</button>
+                                    </div>
+                                </center>
+                            </td></tr>
+                        </table>
+                       
+                    </div>
+            </table>
+        </div>
+        <div>
+            <table style="width:  70%;" cellpadding="5%">
+                <tr>
+                    <td><center><button class="btn" id="frustum"  type="button">FRUSTUM</button></center></td>
+                    <td><center><button class="btn" id="movement"  type="button">MOVEMENT</button></center></td>
+                    <td><center><button class="btn" id="shadows"  type="button">SHADOWS</button></center></td>
+                    <td>
+                        <center>
+                            <div class="slide-container">
+                                <input type="range" min="1" max="70" value="1" class="slider" id="slide-explode">
+                            </div>
+                        </center>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="container" id="instructions">
+            <canvas id="text-canvas" height="40px" style="border: 0px;"></canvas>
+            <script>
+                var text_canvas = document.getElementById("text-canvas");
+                var text_ctx = text_canvas.getContext("2d");
+                text_ctx.font = "20px Comic Sans MS";
+                text_ctx.fillStyle = "black";
+                text_ctx.textAlign = "center";
+                text_ctx.fillText("Instructions: ", text_canvas.width/2, 30);
+            </script>
+            <p>
+                <ul>
+                    <li>Move around using mouse or touch.</li>
+                    <li>Press F or click on frustum button to toggle frustum.</li>
+                    <li>Press M or click on movement button to toggle shoe movement.</li>
+                    <li>Press E or slide to break up the shoes.</li>
+                    <li>Click on color buttons to build your own shoe!</li>
+                    <li>You can upload an image from your computer and apply to the shoes by clicking on "APPLY CHANGES"</li>
+                    <li>On the top right you can use the panel to change scene parameter -> more information <a href="../description.html#interazioni" target="_blank">here</a></li>
+                </ul>
+            </p>
+        </div>
+    </body>
+
+    <script>
+        const settings = {
+            zNear: 1,
+            zFar: 100,
+            D: 10,
+            target: [0, 0, 0],
+            up: [0, 1, 0],
+            dMax: 0.5,  // maximum movement transition
+            dMin: -0.5, // minimum movement transition
+            dx: 0.012, // movement speed - delta
+            eMax: 0.7,  // maximum explotion transition
+            eMin: 0.0, // minimum explotion transition
+            de: 0.01, // explotion speed - delta
+            posX: 5.5,
+            posY: 8,
+            posZ: 5,
+            targetX: 0,
+            targetY: -1,
+            targetZ: 0,
+            projWidth: 5,
+            projHeight: 5,
+            perspective: true,
+            fieldOfView: 80,
+            bias: -0.006,
+            show_fps: false,
+        };
+    </script>
+    <!-- vertex shader -->
+    <script id="vertex-shader" type="not-javascript">
+        attribute vec4 a_position;
+        attribute vec2 a_texcoord;
+        attribute vec3 a_normal;
+
+        uniform mat4 u_projection;
+        uniform mat4 u_view;
+        uniform mat4 u_world;
+        uniform mat4 u_textureMatrix;
+
+        varying vec2 v_texcoord;
+        varying vec4 v_projectedTexcoord;
+        varying vec3 v_normal;
+
+        void main() {
+            vec4 worldPosition = u_world * a_position;
+
+            gl_Position = u_projection * u_view * worldPosition;
+
+            
+            v_texcoord = a_texcoord;
+
+            v_projectedTexcoord = u_textureMatrix * worldPosition;
+
+            v_normal = mat3(u_world) * a_normal;
+        }
+    </script>
+    <!-- fragment shader -->
+    <script id="fragment-shader" type="not-javascript">
+        precision mediump float;
+
+        varying vec2 v_texcoord;
+        varying vec4 v_projectedTexcoord;
+        varying vec3 v_normal;
+
+        uniform vec4 u_colorMult;
+        uniform sampler2D u_texture;
+        uniform sampler2D u_projectedTexture;
+        uniform float u_bias;
+        uniform vec3 u_reverseLightDirection;      
+
+        void main() {
+        vec3 normal = normalize(v_normal);
+
+        float light = dot(normal, u_reverseLightDirection);
+
+        vec3 projectedTexcoord = v_projectedTexcoord.xyz / v_projectedTexcoord.w;
+        float currentDepth = projectedTexcoord.z + u_bias;
+
+        bool inRange =
+            projectedTexcoord.x >= 0.0 &&
+            projectedTexcoord.x <= 1.0 &&
+            projectedTexcoord.y >= 0.0 &&
+            projectedTexcoord.y <= 1.0;
+
+        float projectedDepth = texture2D(u_projectedTexture, projectedTexcoord.xy).r;
+        float shadowLight = (inRange && projectedDepth <= currentDepth) ? 0.0 : 1.0;
+
+        vec4 texColor = texture2D(u_texture, v_texcoord) * u_colorMult;
+        gl_FragColor = vec4(
+            texColor.rgb * light * shadowLight,
+            texColor.a);
+        }
+    </script>
+    <!-- vertex shader -->
+    <script  id="color-vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 a_position;
+        
+        uniform mat4 u_projection;
+        uniform mat4 u_view;
+        uniform mat4 u_world;
+        
+        void main() {
+        // Multiply the position by the matrices.
+        gl_Position = u_projection * u_view * u_world * a_position;
+        }
+    </script>
+    <!-- fragment shader -->
+    <script  id="color-fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        
+        uniform vec4 u_color;
+        void main() {
+        gl_FragColor = u_color;
+        }
+    </script>
+</html>
+
+<script src="geometries.js"></script>
+<script src="event_handlers.js"></script>
+<script src="index.js"></script>
