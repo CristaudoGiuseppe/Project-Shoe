@@ -222,6 +222,7 @@ function project_shoe_demo() {
     // load textures
     setTextures(gl);
 
+    // used to apply new texture to objects easier
     const texture_settings = {
         body: textures[WHITE_LEATHER],
         laces: textures[LACES_MESH],
@@ -234,8 +235,6 @@ function project_shoe_demo() {
 
     // setGeometries
     setGeometries(gl);
-
-    
 
     // Because data is just named arrays like this
     // {

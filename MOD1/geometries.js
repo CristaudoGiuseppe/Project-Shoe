@@ -1,15 +1,12 @@
 var result; // used to temporary store loadDoc result as text
 const geometries = []; // contains all the geometry of the .obj loaded
-const textures = []; 
+const textures = []; // contains all predefined textures
 
 function setGeometries(gl) {
 
     function loadDoc(url) {
-        
         var xhttp = new XMLHttpRequest();
-    
         xhttp.onreadystatechange = function() {
-            
             if (xhttp.readyState == 4) {
                 result = xhttp.responseText;
            }
@@ -52,7 +49,7 @@ function setGeometries(gl) {
 		const H = 0.15; 
 
 		const arrays_floor = {
-		   position: 	{ numComponents: 3, data: [-S,H,-S, S,H,-S, -S,H,S,  S,H,S, ], },
+		   position: 	{ numComponents: 3, data: [-S,H,-S, S,H,-S, -S,H,S,  S,H,S,], },
 		   texcoord: 	{ numComponents: 2, data: [ 0,0, 1,0, 0,1, 1,1,] },
 		   indices: 	{ numComponents: 3, data: [0,2,1, 	2,3,1,], },
 		   normal:		{ numComponents: 3, data: [0,1,0,	0,1,0,	0,1,0,	0,1,0,], },

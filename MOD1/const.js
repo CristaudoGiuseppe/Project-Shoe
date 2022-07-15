@@ -4,6 +4,7 @@
 const OBJ_DIR = 'data/';
 const TEXTURE_DIR = 'data/textures/'
 
+// PATHS .OBJ FILES
 const PATH_BACK = OBJ_DIR + 'back.obj';
 const PATH_BODY = OBJ_DIR + 'body.obj';
 const PATH_LACES = OBJ_DIR + 'laces.obj';
@@ -15,6 +16,7 @@ const PATH_LATERAL_MESH = OBJ_DIR + 'lateral_cover.obj';
 const PATH_TOE_MESH = OBJ_DIR + 'toe_cover.obj';
 const PATH_SIDE_MESH = OBJ_DIR + 'side_cover.obj';
 
+// ARRAY INDICES FOR GEOMETRIES
 const BODY = 0;
 const LACES = 1;
 const TOUNG = 2;
@@ -28,7 +30,7 @@ const BACK = 9;
 const PLANE = 10;
 const FRUSTUM = 11;
 
-
+// PATHS TEXTURES FILES
 const PATH_BLACK_LEATHER = TEXTURE_DIR + 'black_leather.jpg';
 const PATH_BLUE_LEATHER = TEXTURE_DIR + 'blue_leather.jpg';
 const PATH_WHITE_LEATHER = TEXTURE_DIR + 'white_leather.jpg';
@@ -39,6 +41,7 @@ const PATH_SOLE_RUBBER = TEXTURE_DIR + 'sole_rubber.jpg';
 const PATH_MARBLE = TEXTURE_DIR + 'marble.jpg';
 const PATH_ME = TEXTURE_DIR + 'me.jpg';
 
+// ARRAY INDICES FOR TEXTURES
 const BLACK_LEATHER  = 0;
 const BLUE_LEATHER = 1;
 const ORANGE_LEATHER = 2;

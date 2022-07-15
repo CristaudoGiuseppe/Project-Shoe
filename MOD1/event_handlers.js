@@ -4,10 +4,12 @@ var slider = document.getElementById("slide-explode");
 const button_movement = document.getElementById("movement");
 const button_frustum = document.getElementById("frustum");
 const button_shadows = document.getElementById("shadows");
+
 // Variables linked to button on/off functionality
 var toggle_movement_on_off = false, toggle_explotion_on_off = false, toggle_frustum_on_off, toggle_shadow_on_off = true;
 // Variables introduced for menaging mechanics status
-var transl = 0.0, movement = 0.0;
+var transl = 0.0; // explotion
+var movement = 0.0; // movement on Y axis
 
 slider.oninput = function() {
     // For every slider value changes we update the translation (explotion distance)
